@@ -15,8 +15,13 @@ git checkout master
 
 Wichtig: für Änderungen neuen Branch erstellen!
 Reihenfolge:
+
 git-Repository herunterladen
+
 git pull
+
 git checkout -b feature/<neuer branch name>
+
 git commit 
+
 git push
