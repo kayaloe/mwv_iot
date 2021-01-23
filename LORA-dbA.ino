@@ -1,7 +1,6 @@
-/* This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details. */
+/* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. */
+
+//Folgende Bibliotheken werden verwendet und müssen eventuell noch manuell in Arduino installiert werden:
 #include <lmic.h>
 #include <hal/hal.h>
 #include <ESP8266WiFi.h>
@@ -19,20 +18,18 @@ const lmic_pinmap lmic_pins = {
     15, 15, LMIC_UNUSED_PIN         }
 };
 
-static const u1_t PROGMEM DEVEUI[8]={
-  0x1E,0x9F,0x07,0xDF,0x5E,0x1B,0xCB,0x00};
+//Hier werden die TTN Keys angegeben, um an das gewünschte TTn Device zu senden.
+static const u1_t PROGMEM DEVEUI[8]={<"insert deveui from ttn device">};
 void os_getDevEui (u1_t* buf) { 
   memcpy_P(buf, DEVEUI, 8);
 }
 
-static const u1_t PROGMEM APPEUI[8]={
-  0xC0,0x7A,0x03,0xD0,0x7E,0xD5,0xB3,0x70};
+static const u1_t PROGMEM APPEUI[8]={<"insert appeui from ttn device">};
 void os_getArtEui (u1_t* buf) { 
   memcpy_P(buf, APPEUI, 8);
 }
 
-static const u1_t PROGMEM APPKEY[16]={
-  0xA6,0xE5,0x77,0xC4,0x59,0x91,0x1C,0xFA,0x5F,0xF8,0x4A,0xD8,0x03,0xF2,0x23,0x74};
+static const u1_t PROGMEM APPKEY[16]={<"insert appkey from ttn device">};
 void os_getDevKey (u1_t* buf) {  
   memcpy_P(buf, APPKEY, 16);
 };
@@ -122,6 +119,7 @@ void onEvent (ev_t ev) {
   }
 }
 
+//dieser Integer Wert ist wichtig für das IOT-Gerät.
 int loudness;
 
 void setup(){ // Einmalige Initialisierung
@@ -137,13 +135,14 @@ void setup(){ // Einmalige Initialisierung
 }
 
 void loop() {
-  
-
   // Store measured value into point
   // Report RSSI of currently connected network
   //sensor.addField("rssi", WiFi.RSSI());
 
 //lesen des loudness sensors
+//da der Sound Level Meter an den analogen Anschluss geschlossen wurde, kann ganz einfach über analogRead(0) angesprochen werden
+//die Umrechnung in db ist notwendig, da das Messgerät nur einen Wert ausgibt, die nicht einem db-Wert gleicht
+//siehe dazu auch: https://wiki.dfrobot.com/Gravity__Analog_Sound_Level_Meter_SKU_SEN0232
   loudness = analogRead(0);
     float voltageValue,dbValue;
     voltageValue = analogRead(0) / 1024.0 * 3.3;
